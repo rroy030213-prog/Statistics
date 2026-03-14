@@ -51,6 +51,7 @@
 그 테이블에서 우리가 원하는 데이터 부분만 쓰기 위해 SELECT, FROM, WHERE을 통해 데이터를 추출하여 사용하게 된다.
 
 2. SELECT, FROM, WHERE의 핵심 문법 설명
+
 | 구분 | 설명 |
 |-----|-----|
 | FROM | - Dataset.Table: 어떤 테이블에서 데이터를 확인할 것인지 <br> - 이름이 너무 길면 `AS "별칭"`으로 지정 가능 <br> - 예: `FROM Table1 AS t1` |
@@ -146,7 +147,7 @@ ORDER BY cnt DESC
 
 # 2️⃣ 학습 인증란
 
-![image](C:/Users/O/다트비 자료/CAU_DArt-B/SQL_BASIC/image2.png)
+![image](image2.png)
 
 
 
