@@ -46,7 +46,26 @@
 * SELECT, FROM, WHERE의 핵심 문법을 설명할 수 있다. 
 ~~~
 
-<!-- 새롭게 배운 내용을 자유롭게 정리해주세요.-->
+1. SQL 쿼리 구조 이해 -> 집합으로 이해
+데이터셋이 있고 내부에 여러개의 테이블이 있다.
+그 테이블에서 우리가 원하는 데이터 부분만 쓰기 위해 SELECT, FROM, WHERE을 통해 데이터를 추출하여 사용하게 된다.
+
+2. SELECT, FROM, WHERE의 핵심 문법 설명
+| 구분 | 설명 |
+|-----|-----|
+| FROM | - Dataset.Table: 어떤 테이블에서 데이터를 확인할 것인지 <br> - 이름이 너무 길면 `AS "별칭"`으로 지정 가능 <br> - 예: `FROM Table1 AS t1` |
+| WHERE | - FROM에 명시된 Table에 저장된 데이터를 필터링(조건 설정) <br> - Table에 있는 컬럼을 기준으로 조건 설정 |
+| SELECT | - Table에 저장되어 있는 컬럼 선택 <br> - 여러 컬럼 명시 가능 <br> - `col1 AS "별칭"`으로 컬럼 이름에도 별칭 지정 가능 |
+
+코드 예시
+SELECT
+    * #모든 컬럼을 출력하겠다.
+FROM basic.pokemon (데이터셋.테이블)
+WHERE
+    type1="Fire"
+
+SELECT
+    * EXCEPT(제외할 컬럼) -> 컬럼 제외
 
 
 ## 2-5. 집계 (Group By / HAVING / SUM,COUNT)
@@ -58,13 +77,76 @@
 * having과 where의 차이에 대해서 설명할 수 있다.
 ~~~
 
-<!-- 새롭게 배운 내용을 자유롭게 정리해주세요.-->
+1. 데이터를 집계하고 그룹화하는 방법 설명
+ -> 모아서(그룹화해서) 계산하다(평균, 합, 차, 최대, 최소, 개수 등)
+
+2. GROUP BY, HAVING, ORDER BY, 집계함수(SUM/COUNT 등)을 활용하는 방법을 설명할 수 있다.
+
+- GROUP BY: 같은 값끼리 모아서 그룹화한다.
+ex) 포켓몬에서 타입별로 평균 공격력 확인하기
+
+- ORDER BY: 정렬
+ex) 그룹화한 데이터에서 평균 공격력을 오름차순으로 정렬하기
+    - 쿼리의 맨 마지막에만 작성하면 됨
+    - DESC(내림차순), OSC(오름차순)
+
+- HAVING: 집계 후에 조건 설정
+ex) 집계된 데이터에서 포켓몬 수가 10 이상인 것만 추출하기
+
+코드 문법
+SELECT
+    집계할_컬럼1,
+    집계함수(COUNT, MAX, MIN 등)
+FROM Table
+GROUP BY
+    집계할_컬럼1
+
+
+3. having과 where의 차이에 대해서 설명할 수 있다.
+- WHERE: Table에 바로 조건을 설정하고 싶은 경우 사용
+    - Raw Data인 테이블 데이터에서 조건 설정
+- HAVING: GROUP BY한 후 조건을 설정하고 싶은 경우 사용
+
+HAVING 문법
+
+SELECT
+    컬럼1, 컬림2,
+    COUNT(컬럼1) AS col1_count
+FROM <table>
+GROUP BY 컬럼1, 컬럼2
+HAVING                     #GROUP BY가 된 상태에서 조건을 검
+    col1_count > 3
+
+
+예제문제 코드
+-- SELECT
+--   COUNT(id) AS cnt,
+--   COUNT(*) AS cnt2
+-- FROM basic.pokemon
+
+-- SELECT
+--   generation,
+--   COUNT(id) AS cnt
+-- FROM basic.pokemon
+-- GROUP BY
+--   generation
+
+SELECT
+  type1,
+  COUNT(id) AS cnt
+FROM basic.pokemon
+GROUP BY
+  type1
+HAVING cnt >= 10
+ORDER BY cnt DESC
+
+
 
 
 
 # 2️⃣ 학습 인증란
 
-<!-- 이 글을 지우고, 여기에 학습한 것을 인증해주세요.-->
+![image](C:/Users/O/다트비 자료/CAU_DArt-B/SQL_BASIC/image2.png)
 
 
 
@@ -90,7 +172,14 @@ WHERE type = Electric;
 
 
 ~~~
-여기에 답을 작성해주세요!
+1. SELECT에서 name과 type을 뽑아내고싶으면 ','를 써야하는데 '.'을 썼다.
+2. FROM pokemon에서 데이터셋.테이블로 들어가야하므로 basic.pokemon이라고 바꿔야한다. 또한 ';'를 빼야한다.
+3. WHERE type = Electric에서 Electric은 문자이므로 큰따옴표를 붙여 "Electric"라고 써야한다.
+
+올바른 쿼리문
+SELECT name, type
+FROM basic.pokemon
+WHERE type = "Electric";
 ~~~
 
 
@@ -109,7 +198,16 @@ GROUP BY type;
 
 
 ~~~
-여기에 답을 작성해주세요.
+잘못된 부분: 데이터에서 타입별 평균 공격력이 60 이상인 타입만 조회하려는 
+상황이므로 GROUP BY를 활용하여 타입별 평균 공격력을 계산한다.
+이후 그룹화된 데이터에서 공격력이 60 이상인 조건을 활용하는 상황이므로
+WHERE이 아닌 HAVING을 사용해야한다.
+
+올바른 코드
+SELECT type, AVG(attack) AS avg_attack
+FROM pokemon
+GROUP BY type;
+HAVING AVG(attack) >= 60
 ~~~
 
 
